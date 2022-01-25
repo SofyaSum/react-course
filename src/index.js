@@ -1,28 +1,58 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 
-function Message(props) {
+const FunctionComponent = () => {
+  const [messages, setMessages] = useState([]);
+  // const [message, setMessage] = useState("");
+
+
+  const sendMessage = useCallback((author = "User", msg) => {
+    setMessages((messages) => [
+      ...messages,
+      { author: author ?? "Bot", message: msg },
+    ]);
+  }, []);
+
+  useEffect(() => {
+    if (messages.length && messages[messages.length - 1]?.author === "User") {
+      sendMessage("Bot", "from Bot");
+    }
+  }, [messages, sendMessage]);
+
+  console.log("render", messages);
+
   return (
     <div>
-      <p>Message: {props.text}</p>
+      {messages.map((messages) => (
+        <div className="message">
+          <h3>{messages.author}: {messages.message}</h3>
+        </div>
+      ))}
+      <button onClick={() => sendMessage("User", "Test")}>sendMessage</button>
     </div>
-  )
-}
+  );
+};
 
-const Parent = () => {
-  const text = "Hello world!";
+const App = () => {
+  const [visible, setVisible] = useState(true);
 
   return (
-    <div className="message">
-      <Message text={text}/>
+    <div>
+      <button onClick={() => setVisible(!visible)}>setVisible</button>
+      {/* {visible && <ClassComponent testProps="test" />} */}
+      {visible && <FunctionComponent testProps="test" />}
     </div>
-  )
-}
+  );
+};
 
 ReactDOM.render(
   <React.StrictMode>
-    <Parent/>
+    <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
