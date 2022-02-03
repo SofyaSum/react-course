@@ -1,0 +1,13 @@
+.form {
+  width: 500px;
+  min-height: 250px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.wrapper {
+  margin-top: 50px;
+}
+
